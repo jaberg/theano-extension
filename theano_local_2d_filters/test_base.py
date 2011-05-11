@@ -27,11 +27,20 @@ def test_basic():
 
     f = theano.function([images, filters], [op_mfi(images, filters), op_fmi(images, filters)])
 
+    # test basic operation
+
     idata = numpy.random.rand(icolors, irows, icols, n_images).astype(images.dtype)
     fdata = numpy.random.rand(mrows, mcols, icolors, frows, fcols, n_filters).astype(filters.dtype)
 
     zmfi, zfmi = f(idata, fdata)
+    assert numpy.all(zmfi == zfmi.transpose(1, 2, 0, 3))
 
+    # test that non-contiguous args are made contiguous
+    idata = idata[:, :, :, ::2]
+    fdata = fdata[:, :, :, :, :, ::2]
+
+    zmfi, zfmi = f(idata, fdata)
+    assert zmfi.shape == (mrows, mcols, 3, 1)
     assert numpy.all(zmfi == zfmi.transpose(1, 2, 0, 3))
 
 
