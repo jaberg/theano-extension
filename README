@@ -1,0 +1,9 @@
+Theano Extension
+================
+
+This project is a tutorial/Stub that extends Theano with Ops and Optimizations.
+It is meant to illustrate how to add a new Op, how to provide both a C and a
+python implementation, how to provide a GPU implementation, and how to write an
+optimization that inserts the GPU implementation when the host supports GPU
+computing.
+
