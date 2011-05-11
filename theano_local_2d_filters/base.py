@@ -185,6 +185,8 @@ class CpuFilterActs(Op):
             PyArrayObject * c_filters = PyArray_GETCONTIGUOUS(%(filters)s);
             assert (NPY_CARRAY & %(z)s->flags);
 
+            assert (c_images);
+            assert (c_filters);
             %(name)s_cpuFilterActs(
                 (float*)c_images->data,
                 (float*)c_filters->data,
@@ -192,6 +194,8 @@ class CpuFilterActs(Op):
                 n_images, n_filters,
                 icols, fcols, paddingStart,
                 moduleStride, mcols, icolors, %(output_order)s);
+            Py_DECREF(c_images);
+            Py_DECREF(c_filters);
 
         } // END NESTED SCOPE
         """
